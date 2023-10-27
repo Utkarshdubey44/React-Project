@@ -39,17 +39,24 @@ export default function TextForm(props) {
     const [text, setText] = useState('Enter text here');
   return (
     <>
-      <div className="container">
-        <div className="mb-3">
-          <h2>{props.heading}</h2>
-          <textarea
-            className="form-control"
-            id="myBox"
-            onChange={handleOnChange}
-            value={text}
-            rows="8"
-          ></textarea>
-        </div>
+      <div
+        className="container"
+        style={{ color: props.mode === "dark" ? "white" : "black" }}
+      >
+        <h2>
+          {props.heading} | {props.mode}
+        </h2>
+        <textarea
+          className="form-control"
+          id="myBox"
+          style={{
+            backgroundColor: props.mode === "dark" ? "grey" : "white",
+            color: props.mode === "dark" ? "white" : "black",
+          }}
+          onChange={handleOnChange}
+          value={text}
+          rows="8"
+        ></textarea>
 
         <button onClick={handleUpClick} className="btn btn-primary m-1">
           Convert to Uppercase
@@ -66,23 +73,33 @@ export default function TextForm(props) {
         <button onClick={handleExtraSpaces} className="btn btn-primary">
           Remove Extra Spaces
         </button>
-      </div>
-      <div className="container my-3">
-        <h2>Your text summary</h2>
-        <p>
-          {text.split(" ").length} words and {text.length} characters{" "}
-        </p>
-        <p>{0.008 * text.split(" ").length} Minutes to read!</p>
-        {/* if {text.length == 1 && text.split(" ").length == text.length} */}
-        <h3>Preview</h3>
-        <p id="box">{text}</p>
-      </div>
-      <div className="ratio ratio-21x9">
-        <iframe
-          src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
-          title="YouTube video"
-          allowfullscreen
-        ></iframe>
+
+        <div className="container my-3">
+          <h2>Your text summary</h2>
+          <p>
+            {text.length == 0 ? "" : text.split(" ").length + " words and "}
+            {text.length} characters{" "}
+          </p>
+          <p>
+            {0.008 * text.split(" ").length > 0.008
+              ? 0.008 * text.split(" ").length + " Minutes to read!"
+              : ""}
+          </p>
+          {/* if {text.length == 1 && text.split(" ").length == text.length} */}
+          <h3>Preview</h3>
+          <p id="box">
+            {text.length > 0
+              ? text
+              : "Enter something in the textbox above to preview it here"}
+          </p>
+        </div>
+        {/* <div className="ratio ratio-16x9">
+            <iframe
+            src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
+            title="YouTube video"
+            allowfullscreen
+            ></iframe>
+        </div> */}
       </div>
     </>
   );
