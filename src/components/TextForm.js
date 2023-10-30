@@ -33,12 +33,16 @@ export default function TextForm(props) {
     
     const handleExtraSpaces = ()=>{
         let newText = text.split(/[ ]+/);
-        setText(newText.join(" "))
-        props.showAlert("Extra Spaces removed from the Text!", "success");
+        if (newText.length !== 1){
+            setText(newText.join(" "))
+            props.showAlert("Extra Spaces removed from the Text!", "success");
+        }else{
+            props.showAlert("There are no spaces to remove!", "warning");
+        }
     }
 
     const handleOnChange = (event)=> {
-        console.log("Change was clicked!!")
+        // console.log("Change was clicked!!")
         // its going to chage the text value to the data entered in text area
         setText(event.target.value)
     }
@@ -48,17 +52,32 @@ export default function TextForm(props) {
     <>
       <div
         className="container"
-        style={{ color: props.mode === "dark" ? "white" : "black" }}
+        style={{
+          color:
+            props.mode === "dark"
+              ? "white"
+              : props.mode === "primary"
+              ? "#ff8394"
+              : "black",
+        }}
       >
-        <h2>
-          {props.heading} | {props.mode}
-        </h2>
+        <h2>{props.heading}</h2>
         <textarea
           className="form-control"
           id="myBox"
           style={{
-            backgroundColor: props.mode === "dark" ? "grey" : "white",
-            color: props.mode === "dark" ? "white" : "black",
+            backgroundColor:
+              props.mode === "dark"
+                ? "grey"
+                : props.mode === "primary"
+                ? "rgb(255 255 255 / 13%)"
+                : "white",
+            color:
+              props.mode === "dark"
+                ? "white"
+                : props.mode === "primary"
+                ? "yellow"
+                : "black",
           }}
           onChange={handleOnChange}
           value={text}
@@ -84,7 +103,7 @@ export default function TextForm(props) {
         <div className="container my-3">
           <h2>Your text summary</h2>
           <p>
-            {text.length == 0 ? "" : text.split(" ").length + " words and "}
+            {text.length === 0 ? 0 : text.split(/[ ]+/).length} words and{" "}
             {text.length} characters
           </p>
           <p>

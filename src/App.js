@@ -9,6 +9,7 @@ function App() {
   const [mode, setMode] = useState('light'); //whether dark mode is enabled or not
   const [alert, setAlert] = useState(null);
 
+  // It's for showing alert
   const showAlert = (message, type)=>{
     setAlert({
       msg: message,
@@ -24,6 +25,20 @@ function App() {
       setMode('dark');
       document.body.style.backgroundColor = 'grey';
       showAlert("Dark mode has been enabled!","success")
+      document.title = "TextUtils - Dark Mode"
+    }
+    else{
+      setMode('light');
+      document.body.style.backgroundColor = "white";
+      showAlert("Light mode has been enabled!", "success");
+      document.title = "TextUtils";
+    }
+  }
+  const toggleModeB = ()=>{
+    if(mode === 'light'){
+      setMode('primary');
+      document.body.style.backgroundColor = "#0e324b";
+      showAlert("Blue mode has been enabled!","success")
     }
     else{
       setMode('light');
@@ -39,6 +54,7 @@ function App() {
         aboutText="About"
         mode={mode}
         toggleMode={toggleMode}
+        toggleModeB={toggleModeB}
       />
       {/* <div className="row">
         <div className="col-2">
