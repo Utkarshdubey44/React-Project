@@ -5,17 +5,22 @@ export default function TextForm(props) {
         // console.log("Uppercase was clicked!!")
         let newText = text.toUpperCase();
         setText(newText);
+        props.showAlert("Text changed to Upper Case!", "success");
     }
 
     const handleDownClick = () => {
     //   console.log("Lowercase was clicked!!");
       let newText = text.toLocaleLowerCase();
       setText(newText);
+    props.showAlert("Text changed to Lower Case!", "success");
+
     }
 
     const handleClearClick = () => {
       let newText = '';
       setText(newText);
+      props.showAlert("Text cleared!", "success");
+
     }
 
     
@@ -23,15 +28,21 @@ export default function TextForm(props) {
         var text = document.getElementById("myBox");
         text.select();
         navigator.clipboard.writeText(text.value);
+        props.showAlert("Text copied to Clipboard!", "success");
     }
     
     const handleExtraSpaces = ()=>{
         let newText = text.split(/[ ]+/);
-        setText(newText.join(" "))
+        if (newText.length !== 1){
+            setText(newText.join(" "))
+            props.showAlert("Extra Spaces removed from the Text!", "success");
+        }else{
+            props.showAlert("There are no spaces to remove!", "warning");
+        }
     }
 
     const handleOnChange = (event)=> {
-        console.log("Change was clicked!!")
+        // console.log("Change was clicked!!")
         // its going to chage the text value to the data entered in text area
         setText(event.target.value)
     }
@@ -41,17 +52,32 @@ export default function TextForm(props) {
     <>
       <div
         className="container"
-        style={{ color: props.mode === "dark" ? "white" : "black" }}
+        style={{
+          color:
+            props.mode === "dark"
+              ? "white"
+              : props.mode === "primary"
+              ? "#ff8394"
+              : "black",
+        }}
       >
-        <h2>
-          {props.heading} | {props.mode}
-        </h2>
+        <h2>{props.heading}</h2>
         <textarea
           className="form-control"
           id="myBox"
           style={{
-            backgroundColor: props.mode === "dark" ? "grey" : "white",
-            color: props.mode === "dark" ? "white" : "black",
+            backgroundColor:
+              props.mode === "dark"
+                ? "grey"
+                : props.mode === "primary"
+                ? "rgb(255 255 255 / 13%)"
+                : "white",
+            color:
+              props.mode === "dark"
+                ? "white"
+                : props.mode === "primary"
+                ? "yellow"
+                : "black",
           }}
           onChange={handleOnChange}
           value={text}
@@ -61,31 +87,30 @@ export default function TextForm(props) {
         <button onClick={handleUpClick} className="btn btn-primary m-1">
           Convert to Uppercase
         </button>
-        <button onClick={handleDownClick} className="btn btn-primary mx-1">
+        <button onClick={handleDownClick} className="btn btn-primary m-1">
           Convert to LowerCase
         </button>
-        <button onClick={handleClearClick} className="btn btn-primary">
+        <button onClick={handleClearClick} className="btn btn-primary m-1">
           Clear Text
         </button>
-        <button onClick={handleCopy} className="btn btn-primary mx-1">
+        <button onClick={handleCopy} className="btn btn-primary m-1">
           Copy Text
         </button>
-        <button onClick={handleExtraSpaces} className="btn btn-primary">
+        <button onClick={handleExtraSpaces} className="btn btn-primary m-1">
           Remove Extra Spaces
         </button>
 
         <div className="container my-3">
           <h2>Your text summary</h2>
           <p>
-            {text.length == 0 ? "" : text.split(" ").length + " words and "}
-            {text.length} characters{" "}
+            {text.length === 0 ? 0 : text.split(/[ ]+/).length} words and{" "}
+            {text.length} characters
           </p>
           <p>
             {0.008 * text.split(" ").length > 0.008
               ? 0.008 * text.split(" ").length + " Minutes to read!"
               : ""}
           </p>
-          {/* if {text.length == 1 && text.split(" ").length == text.length} */}
           <h3>Preview</h3>
           <p id="box">
             {text.length > 0
